@@ -4,12 +4,14 @@
 #objective: Flask example for class Person
 """""
 from flask import Flask, render_template, request
-from classes.Person import Person
+from classes.person import Utilizador as Person
 
 app = Flask(__name__)
-path = 'data/'
+path = 'data/dados.db'
 Person.read(path)
 prev_option = ""
+
+app.index()
 
 @app.route("/", methods=["post","get"])
 def index():
