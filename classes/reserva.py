@@ -1,10 +1,11 @@
-from Classes.ementa import Ementa
+from classes.gclass import Gclass
 
+class Reserva(Gclass):
 
-class Reserva(self, data, ementa, codigoReserva):
-    self._data=data
-    self._ementa=ementa
-    self._codigoReserva=codigoReserva
+    def __init__(self, data, ementa, codigoReserva):
+        self._data=data
+        self._ementa=ementa
+        self._codigoReserva=codigoReserva
 
 
     @property

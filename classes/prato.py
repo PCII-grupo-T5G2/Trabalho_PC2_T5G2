@@ -1,4 +1,6 @@
-class Prato():
+from classes.gclass import Gclass
+
+class Prato(Gclass):
     obj=dict()
     lst=list()
     ind=0

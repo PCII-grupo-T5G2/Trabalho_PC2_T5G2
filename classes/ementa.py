@@ -1,4 +1,6 @@
-class Ementa():
+from classes.gclass import Gclass
+
+class Ementa(Gclass):
     def __init__(self, nome, pratos):
         self._nome=nome
         self._pratos=pratos

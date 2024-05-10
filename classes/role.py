@@ -1,4 +1,6 @@
-class Role():
+from classes.gclass import Gclass
+
+class Role(Gclass):
     def __init__(self, funcao, nome):
         self._funcao=funcao
         self._nome=nome

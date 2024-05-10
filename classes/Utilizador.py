@@ -1,4 +1,6 @@
 import datetime
+import sqlite3
+
 from classes.gclass import Gclass
 
 class Utilizador(Gclass):
@@ -8,7 +10,7 @@ class Utilizador(Gclass):
     def __init__(self, name, role, senha):
         super().__init__()
         self._name = name
-        self._role = role
+        self._role = role  # 'cliente' ou 'funcionario'
         self._senha = senha
 
     @property
@@ -22,7 +24,7 @@ class Utilizador(Gclass):
     @property
     def senha(self):
         return self._senha
-
+    
 
     def marcar_refeicao(self, data, ementa):
         if self._role == 'cliente':
@@ -40,8 +42,9 @@ class Utilizador(Gclass):
             print("Reservas por ementa:")
             for ementa, quantidade in reservas.items():
                 print(f"{ementa}: {quantidade}")
-        else:
-            print('Clientes não podem consultar reservas!')
+    
+    
+
 
 
         
@@ -55,8 +58,12 @@ cliente2 = Utilizador('Afonso', 'cliente', '1234')
 cliente2.marcar_refeicao("2024-03-27", "Feijoada")
 
 cliente3 = Utilizador('Edu', 'cliente', '1236')
-cliente3.consultar_reservas_por_ementa('2024-03-27')
 cliente3.marcar_refeicao('2024-03-27', 'Carne')
+
+cliente3 = Utilizador('Diogo', 'cliente', '1239')
+cliente3.marcar_refeicao('2024-03-28', 'Vegetariano')
+
+
 
 
 funcionario = Utilizador("Maria", 'funcionario', "54321")
