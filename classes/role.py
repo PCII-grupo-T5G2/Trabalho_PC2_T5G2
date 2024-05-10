@@ -2,6 +2,7 @@ from classes.gclass import Gclass
 
 class Role(Gclass):
     def __init__(self, funcao, nome):
+        super().__init__()
         self._funcao=funcao
         self._nome=nome
 

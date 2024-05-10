@@ -1,5 +1,4 @@
 import datetime
-import sqlite3
 
 from classes.gclass import Gclass
 
@@ -7,12 +6,12 @@ class Utilizador(Gclass):
     
     refeicoes_agendadas = []
     
-    def __init__(self, name, role, senha):
+    def __init__(self, name, role, senha, email):
         super().__init__()
         self._name = name
-        self._role = role  # 'cliente' ou 'funcionario'
+        self._role = role #cliente ou funcionario
         self._senha = senha
-
+        self._email = email
     @property
     def name(self):
         return self._name
@@ -24,6 +23,10 @@ class Utilizador(Gclass):
     @property
     def senha(self):
         return self._senha
+
+    @property
+    def email(self):
+        return self._email
     
 
     def marcar_refeicao(self, data, ementa):
@@ -44,27 +47,3 @@ class Utilizador(Gclass):
                 print(f"{ementa}: {quantidade}")
     
     
-
-
-
-        
-cliente = Utilizador("João", 'cliente', "12345")
-cliente.marcar_refeicao("2024-03-27", "Feijoada")
-
-cliente1 = Utilizador('Miguel', 'cliente', '123')
-cliente1.marcar_refeicao("2024-03-27", "Feijoada")
-
-cliente2 = Utilizador('Afonso', 'cliente', '1234')
-cliente2.marcar_refeicao("2024-03-27", "Feijoada")
-
-cliente3 = Utilizador('Edu', 'cliente', '1236')
-cliente3.marcar_refeicao('2024-03-27', 'Carne')
-
-cliente3 = Utilizador('Diogo', 'cliente', '1239')
-cliente3.marcar_refeicao('2024-03-28', 'Vegetariano')
-
-
-
-
-funcionario = Utilizador("Maria", 'funcionario', "54321")
-funcionario.consultar_reservas_por_ementa("2024-03-27")
