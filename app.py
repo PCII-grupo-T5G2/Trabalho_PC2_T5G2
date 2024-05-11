@@ -9,7 +9,7 @@ from classes.Utilizador import Utilizador as Person
 from classes.userlogin import Userlogin
 
 app = Flask(__name__)
-path = 'data/Userlogin.db'
+path = 'data/cantina.db'
 Person.read(path)
 prev_option = ""
 
@@ -80,8 +80,8 @@ prev_option = ""
 
 
 # Sample users (replace with your actual user data)
-#Userlogin("user1", "admin", Userlogin.set_password("password1"))
-#Userlogin("user2", "user", Userlogin.set_password("password2"))
+Userlogin("user1", "admin", Userlogin.set_password("password1"))
+Userlogin("user2", "user", Userlogin.set_password("password2"))
 
 @app.route("/", methods=["POST", "GET"])
 def login():
