@@ -1,12 +1,13 @@
-from classes.gclass import Gclass
+from classes.ementa import Ementa
 
-class Prato(Gclass):
+class Prato(Ementa):
     obj=dict()
     lst=list()
     ind=0
     
 
     def __init__(self, nome: str, descricao: str, preco: int):
+        super().__init__()
         self._nome=nome
         self._descricao=descricao
         self._preco=preco

@@ -2,9 +2,10 @@ from classes.gclass import Gclass
 
 class Reserva(Gclass):
 
-    def __init__(self, data, ementa, codigoReserva):
+    def __init__(self, data, prato, codigoReserva):
+        super().__init__()
         self._data=data
-        self._ementa=ementa
+        self._prato=prato
         self._codigoReserva=codigoReserva
 
 
@@ -14,7 +15,7 @@ class Reserva(Gclass):
     
 
     @property
-    def ementa(self):
+    def prato(self):
         return self._ementa
     
 
