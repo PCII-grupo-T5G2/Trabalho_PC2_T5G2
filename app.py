@@ -11,6 +11,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 from classes.Utilizador import Utilizador as Person
 from classes.userlogin import Userlogin
+from classes.reserva import Reserva
+from classes.ementa import Ementa
 
 app = Flask(__name__)
 path = 'data/cantina.db'
@@ -109,6 +111,48 @@ def success(username):
 @app.route("/login", methods=["GET"])
 def return_to_login():
      return redirect(url_for("login"))
+
+
+@app.route("/menu/<username>")
+def menu(username):
+    
+    user = Person.get_by_username(username)
+
+    
+    reservas = Reserva.get_by_username(username)
+
+    
+    return render_template("menu.html", user=user, reservas=reservas)
+
+@app.route("/reservar/<username>", methods=["GET", "POST"])
+def reservar(username):
+    if request.method == "POST":
+        
+        data = request.form["data"]
+        prato = request.form["prato"]
+
+       
+        codigo_reserva = generate_reservation_code()
+
+        
+        reserva = Reserva(data, prato, codigo_reserva)
+
+        
+        reserva.save()
+
+        
+        return redirect(url_for("menu", username=username))
+    else:
+       
+        ementas = Ementa.get_all()
+
+        
+        return render_template("reservar.html", username=username, ementas=ementas)
+
+
+
+
+
 
 if __name__ == "__main__":
      app.run(debug=True)   
