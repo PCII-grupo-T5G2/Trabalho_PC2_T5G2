@@ -23,8 +23,8 @@ class Userlogin(Gclass):
     des = ['User','User group','Password']
     username = ''
     
-    def __init__(self, user, usergroup, password):
-        super().__init__()
+    def _init_(self, user, usergroup, password):
+        super()._init_()
         
         self._user = user
         self._usergroup = usergroup
@@ -42,17 +42,18 @@ class Userlogin(Gclass):
     @property
     def usergroup(self):
         return self._usergroup
+    
     @usergroup.setter
     def usergroup(self, usergroup):
         self._usergroup = usergroup
         
     @property
     def password(self):
-        return ""
+        return self._password
     
     @password.setter
     def password(self, password):
-        self._password = password
+        self._password = self.set_password(password)
 
     @classmethod
     def chk_password(self, user, password):
@@ -68,6 +69,9 @@ class Userlogin(Gclass):
         else:
             message = 'No existent user'
         return message
+    
+
+
     @classmethod
     def set_password(self, password):
         passencrypted = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
