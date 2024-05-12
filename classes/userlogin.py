@@ -5,7 +5,7 @@
 # Class User - generic version
 # import sys
 import bcrypt
-# Import the generic class
+
 from classes.gclass import Gclass
 
 class Userlogin(Gclass):
@@ -15,30 +15,30 @@ class Userlogin(Gclass):
     sortkey = ''
     auto_number = 0
     nkey = 1
-    # class attributes, identifier attribute must be the first one on the list
+    
     att = ['_user','_usergroup','_password']
-    # Class header title
+    
     header = 'Users'
-    # field description for use in, for example, in input form
+    
     des = ['User','User group','Password']
     username = ''
-    # Constructor: Called when an object is instantiated
+    
     def __init__(self, user, usergroup, password):
         super().__init__()
-        # Object attributes
+        
         self._user = user
         self._usergroup = usergroup
         self._password = password
-        # Add the new object to the dictionary of objects
+        
         Userlogin.obj[user] = self
-        # Add the code to the list of object codes
+        
         Userlogin.lst.append(user)
 
-    # code property getter method
+    
     @property
     def user(self):
         return self._user
-    # name property getter method
+    
     @property
     def usergroup(self):
         return self._usergroup
