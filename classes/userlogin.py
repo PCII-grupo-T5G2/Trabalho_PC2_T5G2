@@ -23,8 +23,8 @@ class Userlogin(Gclass):
     des = ['User','User group','Password']
     username = ''
     
-    def _init_(self, user, usergroup, password):
-        super()._init_()
+    def __init__(self, user, usergroup, password):
+        super().__init__()
         
         self._user = user
         self._usergroup = usergroup
