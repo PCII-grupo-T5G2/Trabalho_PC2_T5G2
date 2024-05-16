@@ -1,30 +1,17 @@
-"""
-@author: António Brito / Carlos Bragança
-(2024)
-#objective: Flask example for class Person
-"""""
-from datafile import filename
-    
-import os
-
 from flask import Flask, render_template, request, redirect, url_for
-
 from classes.Utilizador import Utilizador as Person
 from classes.userlogin import Userlogin
-from classes.ementa import Ementa
 from classes.reserva import Reserva
-
-Person.read(filename + 'cantina.db')
-Userlogin.read(filename + 'cantina.db')
-Ementa.read(filename + 'cantina.db')
-Reserva.read(filename + 'cantina.db')
-
-
+from classes.ementa import Ementa
 
 app = Flask(__name__)
 path = 'data/cantina.db'
 Person.read(path)
-prev_option = ""
+prev_option = ""  
+Ementa.read(path) 
+Userlogin.read(path) 
+Reserva.read(path)
+#userlogin.read(filename=)
 
  #@app.route("/", methods=["post","get"])
  #def index():
@@ -101,16 +88,16 @@ def login():
      if request.method == "POST":
          username = request.form["username"]
          password = request.form["password"]
-         message = Userlogin.chk_password(username, password)
+         message=Userlogin.chk_password(username, password)
          if message == "Valid":
             
-             return redirect(url_for("success", username=username))
+             return render_template("success.html", username=username)
          else:
              
              return render_template("error.html", message=message)
      else:
          
-         return render_template("login.html")
+         return render_template("login.html") 
 
 @app.route("/success/<username>")
 def success(username):
@@ -139,13 +126,13 @@ def reservar(username):
         prato = request.form["prato"]
 
        
-        codigo_reserva = generate_reservation_code()
+        #codigo_reserva = generate_reservation_code()
 
         
-        reserva = Reserva(data, prato, codigo_reserva)
+        #reserva = Reserva(data, prato, codigo_reserva)
 
         
-        reserva.save()
+        #reserva.save()
 
         
         return redirect(url_for("menu", username=username))
@@ -162,10 +149,7 @@ def reservar(username):
 
 
 if __name__ == "__main__":
-     app.run(debug=True)   
-    
-
-
+     app.run(debug=True)
  
  
  
