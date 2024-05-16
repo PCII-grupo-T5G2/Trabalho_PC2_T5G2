@@ -3,16 +3,23 @@
 (2024)
 #objective: Flask example for class Person
 """""
-
+from datafile import filename
     
-    
-    
+import os
 
 from flask import Flask, render_template, request, redirect, url_for
+
 from classes.Utilizador import Utilizador as Person
 from classes.userlogin import Userlogin
-from classes.reserva import Reserva
 from classes.ementa import Ementa
+from classes.reserva import Reserva
+
+Person.read(filename + 'cantina.db')
+Userlogin.read(filename + 'cantina.db')
+Ementa.read(filename + 'cantina.db')
+Reserva.read(filename + 'cantina.db')
+
+
 
 app = Flask(__name__)
 path = 'data/cantina.db'

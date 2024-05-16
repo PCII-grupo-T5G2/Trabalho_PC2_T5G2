@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
+{% endblock %}
+
+{% block content %}
+    <div class = "dados">
+        <img src="/static/images/{{cname}}.jpg" alt="{{cname}}" width="150" height="100">
+        <h1>{{header}}</h1>
+        <br>
+        
+<!-- horario -->
+   <table class="tabelah">
+       <tr>
+         <td><button id="previousw" type="button" {{butshow}} onclick="window.location.href = '/order/mapa?option=previousw'" 
+                     class="button1"> < </button></td>
+        
+         {% for header in objh.colunas %}
+            <th>{{header}}<br> {{objh.colunasdia[loop.index-1]}}</th>
+         {% endfor %}
+         
+         <td><button id="nextw" type="button" {{butshow}} onclick="window.location.href = '/order/mapa?option=nextw'" 
+                     class="button1"> > </button></td>
+       </tr>
+        {% for linha in objh.semanaTree %}
+           
+              <tr>
+                  <td>{{objh.clientes[loop.index-1]}}</td>
+                    {% for cel in linha %}
+                        <td>
+                            <input type="text" value = "{{ cel.texto }}" readonly wrap="soft"  style="background-color:{{ cel.cor }}"
+                                    onclick="window.location.href = '/order/mapa?option=selcel&codev={{cel.codeevent}}'" >
+                        </td>
+                    {% endfor %}
+            <td>-</td>
+              </tr>
+            
+        {% endfor %}  
+    </table>        
+        --------------
+        <table class = "dados">
+
+	<tr>
+	<!-- area de edição -->
+		<td  class = "dados"> 
+		
+		
+    </td>
+    <!-- area de lista -->
+    
+		<td>
+		Lista de Events para {{selectedcell}}
+		 <table>
+             
+                {% for linha in objh.eventsdiahseleted %}
+                   <tr>                  
+                       <td><input type="text" value = "{{ linha[1] }}" size = {{linha[2]}} onclick="window.location.href = '/order/mapa?option=selcel&codev={{linha[0]}}'" ></td>
+                       </tr>
+                   
+                   {% endfor %}
+                   
+                 
+          </table>   
+		
+		</td>
+	</tr>
+</table>
+
+    
+    </div>
+
+{% endblock %}

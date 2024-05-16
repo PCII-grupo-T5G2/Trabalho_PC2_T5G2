@@ -5,6 +5,20 @@ from classes.gclass import Gclass
 class Utilizador(Gclass):
     
     refeicoes_agendadas = []
+    obj = dict()
+    lst = list()
+    pos = 0
+    sortkey = ''
+    auto_number = 0
+    nkey = 1
+    
+    # class attributes, identifier attribute must be the first one on the list
+    att = ['_name','_role', '_senha', '_email']
+    # Class header title
+    header = 'Utilizador'
+    # field description for use in, for example, in input form
+    des = ['Name','Role', 'Senha', 'Email']
+    # Constructor: Called when an object is instantiated
     
     def __init__(self, name, role, senha, email):
         super().__init__()
