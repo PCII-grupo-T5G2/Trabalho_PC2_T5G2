@@ -1,8 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, make_response
 from classes.Utilizador import Utilizador as Person
 from classes.userlogin import Userlogin
 from classes.reserva import Reserva
 from classes.ementa import Ementa
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import random
+import string
 
 app = Flask(__name__)
 path = 'data/cantina.db'
@@ -11,72 +16,6 @@ prev_option = ""
 Ementa.read(path) 
 Userlogin.read(path) 
 Reserva.read(path)
-#userlogin.read(filename=)
-
- #@app.route("/", methods=["post","get"])
- #def index():
-     #global prev_option
-     #butshow = "enabled"
-     #butedit = "disabled"
-     #option = request.args.get("option")
-     #if option == "edit":
-       #  butshow = "disabled"
-        # butedit = "enabled"
-     #elif option == "delete":
-      #   obj = Person.current()
-       #  Person.remove(obj.code)
-        # if not Person.previous():
-         #    Person.first()
-         #Person.write(path)
-     #elif option == "insert":
-      #   butshow = "disabled"
-       #  butedit = "enabled"
-     #elif option == 'cancel':
-      #   pass
-     #elif prev_option == 'insert' and option == 'save':
-         #strobj = request.form["code"] + ';' + request.form["name"] + ';' + \
-         #request.form["dob"] + ';' + request.form["salary"]
-         #Person.from_string(strobj)
-         #Person.write(path)
-         #Person.last()
-     #elif prev_option == 'edit' and option == 'save':
-         #obj = Person.current()
-         #obj.code = request.form["code"]
-         #obj.name = request.form["name"]
-         #obj.dob = request.form["dob"]
-         #obj.salary = float(request.form["salary"])
-         #Person.write(path)
-     #elif option == "first":
-         #Person.first()
-     #elif option == "previous":
-         #Person.previous()
-     #elif option == "next":
-         #Person.nextrec()
-     #elif option == "last":
-         #Person.last()
-     #elif option == 'exit':
-         #return "<h1>Thank you for using Person app</h1>"
-     #prev_option = option
-     #obj = Person.current()
-     #if option == 'insert':
-     #    code,name,dob,salary = "","","",""
-     #else:
-      #   code = obj.code
-      #   name = obj.name
-      #   dob = obj.dob
-      #   salary = obj.salary
-
-      #return render_template("index.html", butshow=butshow, butedit=butedit)#,\
-                                #code=code,name=name,dob=dob,salary=salary)
- #if __name__ == '__main__':
-  #   app.run() 
-  
-  
-  
-  
-  
-  
-  
 
 
  
@@ -144,6 +83,63 @@ def reservar(username):
         
         return render_template("reservar.html", username=username, ementas=ementas)
 
+def remember_user(username, password):
+    resp = make_response()
+    resp.set_cookie('username', username, max_age=6060247)  # 1 week expiration
+    resp.set_cookie('password', password, max_age=6060247)
+    return resp
+
+def get_remembered_user():
+    username = request.cookies.get('username')
+    password = request.cookies.get('password')
+    return username, password
+
+
+
+@app.route('/reset_password', methods=['POST'])
+def reset_password():
+    username = request.form['username']
+    # Logic to send password reset email to the user's email address
+    # (you would implement this logic)
+    return redirect(url_for('login'))
+
+def generate_password():
+    length = 10
+    chars = string.ascii_letters + string.digits
+    return ''.join(random.choice(chars) for _ in range(length))
+
+def send_email(receiver_email, new_password):
+    sender_email = "your_email@example.com"
+    password = "your_email_password"
+
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = receiver_email
+    message["Subject"] = "Password Reset"
+
+    body = f"Your new password is: {new_password}"
+    message.attach(MIMEText(body, "plain"))
+
+    with smtplib.SMTP_SSL("smtp.example.com", 465) as server:
+        server.login(sender_email, password)
+        server.sendmail(sender_email, receiver_email, message.as_string())
+
+@app.route("/forgot_password", methods=["GET", "POST"])
+def forgot_password():
+    if request.method == "POST":
+        email = request.form["email"]
+        new_password = generate_password()
+
+        # Here you would typically update the user's password in your database
+        # For demonstration purposes, let's just print the new password
+        print("New Password:", new_password)
+
+        # Send password reset email
+        send_email(email, new_password)
+
+        return "Password reset instructions sent to your email."
+    else:
+        return render_template("forgot_password.html")
 
 
 
