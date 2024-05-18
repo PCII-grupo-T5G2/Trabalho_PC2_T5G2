@@ -1,0 +1,18 @@
+/* Estilos para os botões de navegação "Voltar" e "Início" */
+.navigation button,
+.navigation a {
+    background-color: #3498db; /* Cor azul */
+    color: white;
+    padding: 6px 12px; /* Menor tamanho */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px; /* Menor tamanho */
+    text-transform: uppercase;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.navigation button:hover,
+.navigation a:hover {
+    background-color: #2980b9; /* Cor azul mais escura ao passar o mouse */
+}

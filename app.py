@@ -91,7 +91,7 @@ def login():
          message=Userlogin.chk_password(username, password)
          if message == "Valid":
             
-             return render_template("success.html", username=username)
+             return render_template("index.html", username=username)
          else:
              
              return render_template("error.html", message=message)
@@ -99,9 +99,12 @@ def login():
          
          return render_template("login.html") 
 
-@app.route("/success/<username>")
-def success(username):
-     return render_template("success.html", username=username) 
+@app.route("/Cantina/<username>")
+def index(username):
+     return render_template("index.html", username=username) 
+
+
+
 @app.route("/login", methods=["GET"])
 def return_to_login():
      return redirect(url_for("login"))

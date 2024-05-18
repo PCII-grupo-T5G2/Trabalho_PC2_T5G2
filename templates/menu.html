@@ -1,40 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu</title>
-    <style>
-        /* Adicione estilos conforme necessário */
-    </style>
+    <title>Menu Semanal - Cantina</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="buttons.css">
 </head>
 <body>
-    <h1>Menu</h1>
-    
-    
-    <div>
-        <img src="{{ user.photo }}" alt="User Photo">
-        <p><strong>Name:</strong> {{ user.name }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
+    <div class="container">
+        <h1>Menu Semanal</h1>
+        <button class="btn" onclick="mostrarMenu('almoco')">Almoço</button>
+        <button class="btn" onclick="mostrarMenu('jantar')">Jantar</button>
+        <div id="menuSemanal"></div>
+        <div class="navigation">
+            <button class="btn" onclick="window.history.back()">Voltar</button>
+            <a href="index.html" class="btn">Início</a>
+        </div>
     </div>
 
-    
-    <div>
-        <h2>Reservas de Refeições Agendadas</h2>
-        <ul>
-            {% for reserva in reservas %}
-                <li>{{ reserva.data }} - {{ reserva.refeicao }}</li>
-            {% endfor %}
-        </ul>
-    </div>
+    <script>
+        function mostrarMenu(refeicao) {
+            const menu = {
+                almoco: {
+                    segunda: { carne: "Bife à milanesa", peixe: "Bacalhau à Brás", vegetariano: "Legumes salteados" },
+                    terca: { carne: "Frango assado", peixe: "Salmão grelhado", vegetariano: "Tofu com legumes" },
+                    quarta: { carne: "Carne de porco à alentejana", peixe: "Sardinhas assadas", vegetariano: "Risoto de cogumelos" },
+                    quinta: { carne: "Almôndegas", peixe: "Dourada grelhada", vegetariano: "Lasanha de vegetais" },
+                    sexta: { carne: "Costeletas de borrego", peixe: "Polvo à lagareiro", vegetariano: "Espaguete de abobrinha" }
+                },
+                jantar: {
+                    segunda: { carne: "Feijoada", peixe: "Atum à Brás", vegetariano: "Sopa de legumes" },
+                    terca: { carne: "Hambúrguer", peixe: "Peixe espada", vegetariano: "Pizza vegetariana" },
+                    quarta: { carne: "Picanha", peixe: "Robalo grelhado", vegetariano: "Salada de quinoa" },
+                    quinta: { carne: "Lasanha de carne", peixe: "Tilápia ao forno", vegetariano: "Curry de grão-de-bico" },
+                    sexta: { carne: "Alcatra", peixe: "Camarão ao alho", vegetariano: "Strogonoff de cogumelos" }
+                }
+            };
 
-    
-    <div>
-        <h2>Opções</h2>
-        <ul>
-            <li><a href="#">Marcar Refeição</a></li>
-            <li><a href="#">Consultar Reservas</a></li>
-        </ul>
-    </div>
+            const diasSemana = ["segunda", "terca", "quarta", "quinta", "sexta"];
+            let html = `<h3>Menu do ${refeicao.charAt(0).toUpperCase() + refeicao.slice(1)}</h3><ul>`;
+
+            diasSemana.forEach(dia => {
+                html += `<li><strong>${dia.charAt(0).toUpperCase() + dia.slice(1)}-feira:</strong>
+                    <ul>
+                        <li>Carne: ${menu[refeicao][dia].carne}</li>
+                        <li>Peixe: ${menu[refeicao][dia].peixe}</li>
+                        <li>Vegetariano: ${menu[refeicao][dia].vegetariano}</li>
+                    </ul>
+                </li>`;
+            });
+
+            html += `</ul>`;
+            document.getElementById('menuSemanal').innerHTML = html;
+        }
+    </script>
 </body>
 </html>
