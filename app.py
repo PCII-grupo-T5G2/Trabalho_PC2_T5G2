@@ -88,7 +88,7 @@ def login():
      if request.method == "POST":
          username = request.form["username"]
          password = request.form["password"]
-         message=Userlogin.chk_password(username, password)
+         message = Userlogin.chk_password(username, password)
          if message == "Valid":
             
              return render_template("index.html", username=username)
@@ -102,8 +102,6 @@ def login():
 @app.route("/Cantina/<username>")
 def index(username):
      return render_template("index.html", username=username) 
-
-
 
 @app.route("/login", methods=["GET"])
 def return_to_login():

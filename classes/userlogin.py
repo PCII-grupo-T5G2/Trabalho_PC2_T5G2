@@ -60,7 +60,10 @@ class Userlogin(Gclass):
         Userlogin.username = ''
         if user in Userlogin.obj:
             obj = Userlogin.obj[user]
-            valid = True
+            if obj._password == password:
+                valid = True
+            else: 
+                valid = False
             #valid = bcrypt.checkpw(password.encode(), obj._password.encode())
             if valid:
                 Userlogin.username = user
