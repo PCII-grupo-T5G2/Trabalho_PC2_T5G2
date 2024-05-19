@@ -23,6 +23,10 @@ class Ementa(Gclass):
         self._pratocarne = pratocarne
         self._pratopeixe = pratopeixe
         self._pratoveg = pratoveg
+        
+        Ementa.obj[nome] = self
+
+        Ementa.lst.append(nome)
 
     @property
     def nome(self):

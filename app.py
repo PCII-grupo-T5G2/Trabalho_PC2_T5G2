@@ -1,3 +1,4 @@
+from datetime import date, datetime
 from flask import Flask, render_template, request, redirect, url_for, make_response
 from classes.Utilizador import Utilizador as Person
 from classes.userlogin import Userlogin
@@ -45,43 +46,64 @@ def index(username):
 @app.route("/login", methods=["GET"])
 def return_to_login():
      return redirect(url_for("login"))
-
+ 
 
 @app.route("/menu/<username>")
 def menu(username):
-    
-    user = Person.get_by_username(username)
+    return render_template("menu.html", username=username)
 
-    
-    reservas = Reserva.get_by_username(username)
+@app.route("/reservar/<username>", methods=["POST", "GET"])
+def reservar(username):
+    if request.method == "POST":
+        
+        data_str = request.form.get("data")
+        refeicao = request.form.get("refeicao")
+        
+        if data_str != "":
+            data = datetime.strptime(data_str, "%Y-%m-%d")
+            current_datetime = datetime.now()
+            formatted_datetime = current_datetime.strftime('%Y-%m-%d')
+            new_datetime = datetime.strptime(formatted_datetime, '%Y-%m-%d')
+        else:
+            return redirect(url_for("reservas_invalidas", username=username))
+        
 
-    
-    return render_template("menu.html", user=user, reservas=reservas)
+        if refeicao in ["almoco", "jantar"] and data > new_datetime:
+
+            return redirect(url_for("success", username=username))
+        else:
+            return redirect(url_for("reservas_invalidas", username=username))
+    else:
+        return render_template("reservar.html", username=username)
+
 
 @app.route("/reservar/<username>", methods=["GET", "POST"])
-def reservar(username):
+def reservar_refeicao(username):
     if request.method == "POST":
         
         data = request.form["data"]
         prato = request.form["prato"]
 
        
-        #codigo_reserva = generate_reservation_code()
-
-        
-        #reserva = Reserva(data, prato, codigo_reserva)
-
-        
-        #reserva.save()
-
+        reserva = Reserva(data, prato)
+        reserva.save()
         
         return redirect(url_for("menu", username=username))
-    else:
-       
-        ementas = Ementa.get_all()
 
-        
-        return render_template("reservar.html", username=username, ementas=ementas)
+
+
+@app.route("/success")
+def success():
+    return render_template("success.html")
+
+
+@app.route("/reservas_invalidas/<username>")
+def reservas_invalidas(username):
+    return render_template("reservas_invalidas.html", username=username)
+
+@app.route("/reservas/<username>")
+def reservas(username):
+    return render_template("reservas.html", username=username)
 
 def remember_user(username, password):
     resp = make_response()
@@ -140,10 +162,6 @@ def forgot_password():
         return "Password reset instructions sent to your email."
     else:
         return render_template("forgot_password.html")
-
-
-
-
 
 if __name__ == "__main__":
      app.run(debug=True)

@@ -12,9 +12,9 @@
     <div class="container">
         <h1>Bem-vindo à Cantina</h1>
         <div class="menu">
-            <a href="reservar.html" class="btn">Reservar Refeição</a>
-            <a href="reservas.html" class="btn">Ver Reservas</a>
-            <a href="menu.html" class="btn">Ver Ementa Semanal</a>
+            <a href="{{ url_for('reservar', username=username) }}" class="btn">Reserve a sua refeição</a>
+            <a href="{{ url_for('reservas', username=username) }}" class="btn">Ver Reservas</a>
+            <a href="{{ url_for('menu', username=username) }}" class="btn">Ver Ementa emanal</a>
         </div>
     </div>
 </body>

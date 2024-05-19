@@ -10,17 +10,21 @@ class Role(Gclass):
     nkey = 1
     
     # class attributes, identifier attribute must be the first one on the list
-    att = ['_funcao', '_nome']
+    att = ['_nome', '_funcao']
     # Class header title
     header = 'Role'
     # field description for use in, for example, in input form
-    des = ['Funcao', 'Nome']
+    des = ['Nome', 'Funcao']
     # Constructor: Called when an object is instantiated
     
-    def __init__(self, funcao, nome):
+    def __init__(self, nome, funcao):
         super().__init__()
         self._funcao=funcao
         self._nome=nome
+        
+        Role.obj[nome] = self
+
+        Role.lst.append(nome)
 
     @property
     def funcao(self):

@@ -1,7 +1,9 @@
+import datetime
+
 from classes.gclass import Gclass
+from classes.reserva import Reserva
 
 class Utilizador(Gclass):
-    
     refeicoes_agendadas = []
     obj = dict()
     lst = list()
@@ -11,25 +13,28 @@ class Utilizador(Gclass):
     nkey = 1
     
     # class attributes, identifier attribute must be the first one on the list
-    att = ['_cod','_name','_role', '_senha', '_email']
+    att = ['_codigo','_name','_role', '_senha', '_email']
     # Class header title
     header = 'Utilizador'
     # field description for use in, for example, in input form
-    des = ['Cod','Name','Role', 'Senha', 'Email']
+    des = ['Codigo','Name','Role', 'Senha', 'Email']
     # Constructor: Called when an object is instantiated
     
-    def __init__(self, cod, name, role, senha, email):
+    def __init__(self, codigo, name, role, senha, email):
         super().__init__()
+        self._codigo = codigo
         self._name = name
         self._role = role #cliente ou funcionario
         self._senha = senha
         self._email = email
-        self._cod = cod
-        
-        Utilizador.obj[cod] = self
-        
-        Utilizador.lst.append(cod)
-        
+        self.codreserva = 1000
+        Utilizador.obj[codigo] = self
+
+        Utilizador.lst.append(codigo)
+    @property
+    def codigo(self):
+        return self._codigo
+    
     @property
     def name(self):
         return self._name
@@ -45,27 +50,19 @@ class Utilizador(Gclass):
     @property
     def email(self):
         return self._email
-    @property
-    def cod(self):
-        return self._cod
     
-    
-
-    def marcar_refeicao(self, data, ementa):
-        if self._role == 'cliente':
-            Utilizador.refeicoes_agendadas.append([data,ementa])
-            print(f"Refeição marcada para {data} com a ementa {ementa} em nome de {self._name}.")
+    def marcar_refeicao(self, data, prato):
+        if self._role == "cliente":
+            reserva = Reserva(data, prato)
+            Utilizador.refeicoes_agendadas.append(reserva)
         else:
             print("Funcionários não podem marcar refeições.")
+        
+    def consultar_refeicao(self):
+        for refeicao in Utilizador.refeicoes_agendadas:
+            print(refeicao)
+            
+        
 
-    def consultar_reservas_por_ementa(self, data):
-        if self._role == 'funcionario':
-            reservas = {refeicao[1]: 0 for refeicao in Utilizador.refeicoes_agendadas if refeicao[0] == data}
-            for refeicao in Utilizador.refeicoes_agendadas:
-                if refeicao[0] == data:
-                    reservas[refeicao[1]] += 1
-            print("Reservas por ementa:")
-            for ementa, quantidade in reservas.items():
-                print(f"{ementa}: {quantidade}")
     
     

@@ -1,7 +1,10 @@
+from datetime import date, datetime
+
 from classes.gclass import Gclass
 
 class Reserva(Gclass):
     
+    num = 1000
     obj = dict()
     lst = list()
     pos = 0
@@ -17,25 +20,28 @@ class Reserva(Gclass):
     des = ['Data', 'Prato', 'CodigoReserva']
     # Constructor: Called when an object is instantiated
 
-    def __init__(self, data, prato, codigoReserva):
+    def __init__(self, data, prato):
         super().__init__()
-        self._data=data
+        self._data = datetime.strptime(data, '%Y-%m-%d').date()
         self._prato=prato
-        self._codigoReserva=codigoReserva
-
-
+        self._codigoReserva = Reserva.num
+        Reserva.num += 1
+        Reserva.obj[self._codigoReserva] = self
+        Reserva.lst.append(self._codigoReserva)
+        
     @property
     def data(self):
         return self._data
     
-
     @property
     def prato(self):
-        return self._ementa
-    
+        return self._prato
 
     @property
     def codigoReserva(self):
         return self._codigoReserva
+    
+    def __str__(self):
+        return f'Data: {self._data}, Prato: {self._prato}, Código Reserva: {self._codigoReserva}'
     
     

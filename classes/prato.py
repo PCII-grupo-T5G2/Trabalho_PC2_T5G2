@@ -22,6 +22,10 @@ class Prato(Ementa):
         self._nome=nome
         self._descricao=descricao
         self._preco=preco
+        
+        Prato.obj[nome] = self
+
+        Prato.lst.append(nome)
     
 
     @property

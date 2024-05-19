@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <h1>Reservar Refeição</h1>
-        <form>
+        <form action="{{ url_for('reservar', username=username) }}" method="POST">
             <label for="data">Data:</label><br>
             <input type="date" id="data" name="data"><br><br>
             <label for="refeicao">Refeição:</label><br>
@@ -22,7 +22,6 @@
         </form>
         <div class="navigation">
             <button class="btn" onclick="window.history.back()">Voltar</button>
-            <a href="index.html" class="btn">Início</a>
         </div>
     </div>
 </body>
