@@ -5,7 +5,7 @@
 # Class User - generic version
 # import sys
 import bcrypt
-
+from flask import session
 from classes.gclass import Gclass
 
 class Userlogin(Gclass):
@@ -62,6 +62,8 @@ class Userlogin(Gclass):
             obj = Userlogin.obj[user]
             if obj._password == password:
                 valid = True
+                session["user"] = user
+                session["usergroup"] = obj._usergroup
             else: 
                 valid = False
             #valid = bcrypt.checkpw(password.encode(), obj._password.encode())

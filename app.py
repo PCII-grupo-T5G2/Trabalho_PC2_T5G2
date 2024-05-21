@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from flask import Flask, render_template, request, redirect, url_for, make_response
+from flask import Flask, render_template, request, redirect, url_for, make_response, session
 from classes.Utilizador import Utilizador as Person
 from classes.userlogin import Userlogin
 from classes.reserva import Reserva
@@ -17,8 +17,9 @@ prev_option = ""
 Ementa.read(path) 
 Userlogin.read(path) 
 Reserva.read(path)
-
-
+#Prato.read(path)
+app.secret_key = 'BAD_SECRET_KEY'
+ 
  
 Userlogin("user1", "admin", Userlogin.set_password("password1"))
 Userlogin("user2", "user", Userlogin.set_password("password2"))
@@ -30,11 +31,11 @@ def login():
          password = request.form["password"]
          message = Userlogin.chk_password(username, password)
          if message == "Valid":
-            
-             return render_template("index.html", username=username)
+             
+             return render_template("index.html", username=username, group=session["usergroup"])
          else:
              
-             return render_template("error.html", message=message)
+             return render_template("error.html", message=message) 
      else:
          
          return render_template("login.html") 
@@ -64,6 +65,11 @@ def reservar(username):
             current_datetime = datetime.now()
             formatted_datetime = current_datetime.strftime('%Y-%m-%d')
             new_datetime = datetime.strptime(formatted_datetime, '%Y-%m-%d')
+            
+            # Reserva.from_string("")
+            # cod="xpto"#Reserva.lst
+            # Reserva.insert(cod)
+            
         else:
             return redirect(url_for("reservas_invalidas", username=username))
         
@@ -89,7 +95,6 @@ def reservar_refeicao(username):
         reserva.save()
         
         return redirect(url_for("menu", username=username))
-
 
 
 @app.route("/success")
