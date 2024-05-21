@@ -18,7 +18,10 @@
             {% if group == 'funcionário' %}
             <a href="{{ url_for('menu', username=username) }}" class="btn">Ver Relatório</a>
             {% endif %}
-        </div>
+        </div> 
+        <a href="{{ url_for('logoff') }}" class="logoff-btn">Logoff</a>
     </div>
 </body>
 </html>
+
+

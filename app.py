@@ -168,10 +168,20 @@ def forgot_password():
     else:
         return render_template("forgot_password.html")
 
+
+@app.route('/logoff')
+def logoff():
+    # Clear the session data
+    session.clear()
+    return redirect(url_for('login'))
+
+
+
+
 if __name__ == "__main__":
-     app.run(debug=True)
- 
- 
+     app.run(debug=True)   
+                  
+             
  
  
  

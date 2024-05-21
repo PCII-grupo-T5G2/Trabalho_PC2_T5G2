@@ -30,22 +30,22 @@
         label {
             display: block;
             margin-bottom: 5px;
+            font-size: 16px; /* Ensure label text size */
         }
 
         input[type="text"],
-        input[type="password"] {
+        input[type="password"],
+        input[type="submit"] {
             width: 95%;
             padding: 8px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 16px; /* Ensure input text size */
         }
 
         input[type="submit"] {
-            width: 100%;
-            padding: 10px;
             border: none;
-            border-radius: 5px;
             background-color: #007bff;
             color: #fff;
             cursor: pointer;
@@ -55,32 +55,53 @@
             background-color: #0056b3;
         }
 
-        .forgot-password {
-            text-align: center;
-            margin-top: 10px;
+        .remember-forgot-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
         }
-        
+
         .forgot-password a {
             color: #007bff;
             text-decoration: none;
+            font-size: 16px; /* Ensure text size matches other elements */
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember-me span {
+            margin-left: 5px;
+            font-size: 16px; /* Ensure text size matches other elements */
         }
     </style>
-    </head>
+</head>
 <body>
     <form method="POST">
         <h2>Login - Senhas Cantina FEUP</h2>
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
-            <input type="checkbox" id="remember_me" name="remember_me">
-            <span style="margin-left: 5px;">Remember Me</span>
+        <input type="password" id="password" name="password" required>
+        <div class="remember-forgot-container">
+            <div class="remember-me">
+                <input type="checkbox" id="remember_me" name="remember_me">
+                <span>Remember Me</span>
+            </div>
+            <div class="forgot-password">
+                <a href="{{ url_for('forgot_password') }}">Forgot Password?</a>
+            </div>
         </div>
         <input type="submit" value="Login">
-        <div class="forgot-password">
-            <a href="{{ url_for('forgot_password') }}">Forgot Password?</a>
-        </div>
     </form>
 </body>
 </html>
+
+       
