@@ -1,6 +1,6 @@
-from classes.ementa import Ementa
+from classes.gclass import Gclass
 
-class Prato(Ementa):
+class Prato(Gclass):
     obj = dict()
     lst = list()
     pos = 0
@@ -9,36 +9,46 @@ class Prato(Ementa):
     nkey = 1
     
     # class attributes, identifier attribute must be the first one on the list
-    att = ['_nome','_descricao', '_preco']
+    att = ['_cod','_semana', '_carne','_peixe',"_vegetariano"]
     # Class header title
     header = 'Prato'
     # field description for use in, for example, in input form
-    des = ['Nome','Descricao', 'Preco']
+    des = ['Cod','Semana', 'Carne','Peixe','Vegetariano']
     # Constructor: Called when an object is instantiated
     
 
-    def __init__(self, nome: str, descricao: str, preco: int):
+    def __init__(self, cod,semana,carne,peixe,vegetariano):
         super().__init__()
-        self._nome=nome
-        self._descricao=descricao
-        self._preco=preco
+        self._cod = cod
+        self._semana = semana
+        self._carne = carne
+        self._peixe = peixe
+        self._vegetariano = vegetariano
         
-        Prato.obj[nome] = self
+        Prato.obj[cod] = self
 
-        Prato.lst.append(nome)
+        Prato.lst.append(cod)
     
 
     @property
-    def nome(self):
-        return self._nome
+    def cod(self):
+        return self._cod
     
     @property
-    def descricao(self):
-        return self._descricao
+    def semana(self):
+        return self._semana
     
     @property
-    def preco(self):
-        return self._preco
+    def carne(self):
+        return self._carne
+    
+    @property
+    def peixe(self):
+        return self._peixe
+    
+    @property
+    def vegetariano(self):
+        return self._vegetariano
     
 
     

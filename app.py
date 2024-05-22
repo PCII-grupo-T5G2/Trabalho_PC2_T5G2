@@ -174,7 +174,7 @@ def logoff():
     # Clear the session data
     session.clear()
     return redirect(url_for('login'))
-
+ 
 
 
 
