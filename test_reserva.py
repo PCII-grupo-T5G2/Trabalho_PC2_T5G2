@@ -1,13 +1,12 @@
 
+from classes.reserva import Reserva
 
-from classes.prato import Prato
+Reserva.read('data/cantina.db')
 
-Prato.read('data/cantina.db')
-
-cname = "Prato"
+cname = "Reserva"
 cl = eval(cname)
-
-obj = cl.from_string("2024-05-29;almoco")
+    
+obj = cl.from_string("1001;2024-05-29;almoco")
 
 print("objeto sem estar gravado ",obj)
 

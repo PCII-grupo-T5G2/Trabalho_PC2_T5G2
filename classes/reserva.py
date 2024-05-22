@@ -13,17 +13,17 @@ class Reserva(Gclass):
     nkey = 1
     
     # class attributes, identifier attribute must be the first one on the list
-    att = ['_data','_prato', '_codigoReserva']
+    att = ['_codigoReserva', '_data','_prato']
     # Class header title
     header = 'Reserva'
     # field description for use in, for example, in input form
-    des = ['Data', 'Prato', 'CodigoReserva']
+    des = ['CodigoReserva','Data', 'Prato']
     # Constructor: Called when an object is instantiated
 
-    def __init__(self, data, prato):
+    def __init__(self, codigoReserva, data, prato):
         super().__init__()
         self._data = datetime.strptime(data, '%Y-%m-%d').date()
-        self._prato=prato
+        self._prato= prato
         self._codigoReserva = Reserva.num
         Reserva.num += 1
         Reserva.obj[self._codigoReserva] = self
@@ -42,6 +42,5 @@ class Reserva(Gclass):
         return self._codigoReserva
     
     def __str__(self):
-        return f'Data: {self._data}, Prato: {self._prato}, Código Reserva: {self._codigoReserva}'
-    
-    
+        return f'{self._data};{self._prato};{self._codigoReserva}'
+

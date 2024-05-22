@@ -4,6 +4,7 @@ from classes.Utilizador import Utilizador as Person
 from classes.userlogin import Userlogin
 from classes.reserva import Reserva
 from classes.ementa import Ementa
+from classes.prato import Prato
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -17,7 +18,7 @@ prev_option = ""
 Ementa.read(path) 
 Userlogin.read(path) 
 Reserva.read(path)
-#Prato.read(path)
+Prato.read(path)        
 app.secret_key = 'BAD_SECRET_KEY'
  
  
@@ -61,18 +62,18 @@ def reservar(username):
         refeicao = request.form.get("refeicao")
         
         if data_str != "":
-            data = datetime.strptime(data_str, "%Y-%m-%d")
+            data = datetime.strptime(data_str, "%Y-%m-%d").date()
             current_datetime = datetime.now()
             formatted_datetime = current_datetime.strftime('%Y-%m-%d')
-            new_datetime = datetime.strptime(formatted_datetime, '%Y-%m-%d')
+            new_datetime = datetime.strptime(formatted_datetime, '%Y-%m-%d').date()
             
-            # Reserva.from_string("")
-            # cod="xpto"#Reserva.lst
-            # Reserva.insert(cod)
+            
+            reserva = Reserva(Reserva.num, data_str,refeicao)
+            cod = reserva._codigoReserva
+            reserva.insert(cod)
             
         else:
-            return redirect(url_for("reservas_invalidas", username=username))
-        
+            return redirect(url_for("reservas_invalidas", username=username))   
 
         if refeicao in ["almoco", "jantar"] and data > new_datetime:
 
@@ -81,20 +82,6 @@ def reservar(username):
             return redirect(url_for("reservas_invalidas", username=username))
     else:
         return render_template("reservar.html", username=username)
-
-
-@app.route("/reservar/<username>", methods=["GET", "POST"])
-def reservar_refeicao(username):
-    if request.method == "POST":
-        
-        data = request.form["data"]
-        prato = request.form["prato"]
-
-       
-        reserva = Reserva(data, prato)
-        reserva.save()
-        
-        return redirect(url_for("menu", username=username))
 
 
 @app.route("/success")
@@ -179,8 +166,8 @@ def logoff():
 
 
 if __name__ == "__main__":
-     app.run(debug=True)   
-                  
+     app.run(debug=True)
+
              
  
  
