@@ -10,23 +10,23 @@ class Ementa(Gclass):
     nkey = 1
     
     # class attributes, identifier attribute must be the first one on the list
-    att = ['_nome','_pratocarne', '_pratopeixe', '_pratoveg']
+    att = ['_semana','_pratocarne', '_pratopeixe', '_pratoveg']
     # Class header title
     header = 'Ementa'
     # field description for use in, for example, in input form
-    des = ['Nome','Pratocarne', 'Pratopeixe', 'Pratoveg']
+    des = ['Semana','Pratocarne', 'Pratopeixe', 'Pratoveg']
     # Constructor: Called when an object is instantiated
     
-    def __init__(self, nome, pratocarne, pratopeixe, pratoveg):
+    def __init__(self, semana, pratocarne, pratopeixe, pratoveg):
         super().__init__()
-        self._nome = nome
+        self._semana = semana
         self._pratocarne = pratocarne
         self._pratopeixe = pratopeixe
         self._pratoveg = pratoveg
         
-        Ementa.obj[nome] = self
+        Ementa.obj[semana] = self
 
-        Ementa.lst.append(nome)
+        Ementa.lst.append(semana)
 
     @property
     def nome(self):
