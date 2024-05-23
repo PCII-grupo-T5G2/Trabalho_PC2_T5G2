@@ -27,7 +27,6 @@ class Utilizador(Gclass):
         self._role = role #cliente ou funcionario
         self._senha = senha
         self._email = email
-        self.codreserva = 1000
         Utilizador.obj[codigo] = self
 
         Utilizador.lst.append(codigo)
@@ -50,6 +49,12 @@ class Utilizador(Gclass):
     @property
     def email(self):
         return self._email
+    
+    def procuraNovoCodigo():
+        maior_codigo = 0
+        if len(Utilizador.lst) > 0:
+            return int(Utilizador.lst[-1])
+        return maior_codigo
     
     def marcar_refeicao(self, data, prato):
         if self._role == "cliente":

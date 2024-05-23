@@ -16,28 +16,28 @@ class Userlogin(Gclass):
     auto_number = 0
     nkey = 1
     
-    att = ['_user','_usergroup','_password']
+    att = ['_email','_usergroup','_password']
     
-    header = 'Users'
+    header = 'Email'
     
-    des = ['User','User group','Password']
+    des = ['Email','User group','Password']
     username = ''
     
-    def __init__(self, user, usergroup, password):
+    def __init__(self, email, usergroup, password):
         super().__init__()
         
-        self._user = user
+        self._email = email
         self._usergroup = usergroup
         self._password = password
         
-        Userlogin.obj[user] = self
+        Userlogin.obj[email] = self
         
-        Userlogin.lst.append(user)
+        Userlogin.lst.append(email)
 
     
     @property
-    def user(self):
-        return self._user
+    def email(self):
+        return self._email
     
     @property
     def usergroup(self):

@@ -112,7 +112,27 @@ def get_remembered_user():
     password = request.cookies.get('password')
     return username, password
 
-
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        name = request.form["name"]
+        senha = request.form["senha"]
+        email = request.form["email"]
+        role = 'cliente'
+        codigo = str(Person.procuraNovoCodigo() + 1)   
+        s = f'{codigo};{name};{role};{senha};{email}'
+        f = f'{email};{role};{name}'
+        
+        Person.from_string(s)
+        Person.insert(codigo)
+        
+        Userlogin.from_string(f)
+        Userlogin.insert(email)
+        
+        
+        return render_template("login.html")
+    else:
+        return render_template("signup.html")
 
 @app.route('/reset_password', methods=['POST'])
 def reset_password():
