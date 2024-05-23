@@ -6,7 +6,7 @@ Reserva.read('data/cantina.db')
 cname = "Reserva"
 cl = eval(cname)
     
-obj = cl.from_string("1001;2024-05-29;almoco")
+obj = cl.from_string("1001;2024-05-29;almoco;carne;email@email.com")
 
 print("objeto sem estar gravado ",obj)
 

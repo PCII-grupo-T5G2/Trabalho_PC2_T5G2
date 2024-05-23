@@ -12,22 +12,27 @@ class Reserva(Gclass):
     nkey = 1
     
     # class attributes, identifier attribute must be the first one on the list
-    att = ['_codigoReserva', '_data','_prato','_tipo']
+    att = ['_codigoReserva', '_data','_prato','_tipo', 'email']
     # Class header title
     header = 'Reserva'
     # field description for use in, for example, in input form
-    des = ['CodigoReserva','Data', 'Prato','Tipo']
+    des = ['CodigoReserva','Data', 'Prato','Tipo', 'Email']
     # Constructor: Called when an object is instantiated
 
-    def __init__(self, codigoReserva, data, prato, tipo):
+    def __init__(self, codigoReserva, data, prato, tipo, email):
         super().__init__()
         self._data = datetime.strptime(data, '%Y-%m-%d').date()
         self._prato= prato
         self._codigoReserva = codigoReserva
         self._tipo = tipo
+        self._email = email
         Reserva.obj[self._codigoReserva] = self
         Reserva.lst.append(self._codigoReserva)
-        
+    
+    @property
+    def email(self):
+        return self._email
+    
     @property
     def data(self):
         return self._data

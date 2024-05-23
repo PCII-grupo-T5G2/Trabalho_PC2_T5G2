@@ -67,15 +67,10 @@ def reservar(username):
             current_datetime = datetime.now()
             formatted_datetime = current_datetime.strftime('%Y-%m-%d')
             new_datetime = datetime.strptime(formatted_datetime, '%Y-%m-%d').date()
-            
             codigo = str(Reserva.procuraNovoCodigo() + 1)   
-            s = f'{codigo};{data_str};{refeicao};{tipo}'
+            s = f'{codigo};{data_str};{refeicao};{tipo};{username}'
             Reserva.from_string(s)
-            Reserva.insert(codigo)       
-            
-            # reserva = Reserva(Reserva.num, data_str,refeicao)
-            # cod = reserva._codigoReserva
-            # reserva.insert(cod)
+            Reserva.insert(codigo)
             
         else:
             return redirect(url_for("reservas_invalidas", username=username))   

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Reservations</title>
+</head>
+<body>
+    <h1>Your Reservations</h1>
+    <ul>
+        {% for reservation in reservations %}
+            <li>{{ reservation.date }}: {{ reservation.food }} ({{ reservation.type }}) - Code: {{ reservation.code }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/reservar.html">Make Another Reservation</a>
+</body>
+</html>
