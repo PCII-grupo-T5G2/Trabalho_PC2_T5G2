@@ -60,6 +60,7 @@ def reservar(username):
         
         data_str = request.form["data"]
         refeicao = request.form["refeicao"]
+        tipo = request.form["tipo"]
         
         if data_str != "":
             data = datetime.strptime(data_str, "%Y-%m-%d").date()
@@ -68,7 +69,7 @@ def reservar(username):
             new_datetime = datetime.strptime(formatted_datetime, '%Y-%m-%d').date()
             
             codigo = str(Reserva.procuraNovoCodigo() + 1)   
-            s = f'{codigo};{data_str};{refeicao}'
+            s = f'{codigo};{data_str};{refeicao};{tipo}'
             Reserva.from_string(s)
             Reserva.insert(codigo)       
             
