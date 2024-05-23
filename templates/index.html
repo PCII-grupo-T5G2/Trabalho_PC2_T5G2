@@ -14,7 +14,7 @@
         <div class="menu">
             <a href="{{ url_for('reservar', username=username) }}" class="btn">Reserve a sua refeição</a>
             <a href="{{ url_for('reservas', username=username) }}" class="btn">Ver Reservas</a>
-            <a href="{{ url_for('menu', username=username) }}" class="btn">Ver Ementa emanal</a>
+            <a href="{{ url_for('menu', username=username) }}" class="btn">Ver Ementa semanal</a>
             {% if group == 'funcionário' %}
             <a href="{{ url_for('menu', username=username) }}" class="btn">Ver Relatório</a>
             {% endif %}

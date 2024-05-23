@@ -16,15 +16,11 @@
             <!-- Adicione aqui as reservas dinâmicas -->
         </ul>
         <div class="navigation">
-            <button class="btn" onclick="goBack()">Voltar</button>
+            <button class="btn" onclick="window.history.back()">Voltar</button>
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css')}}">
         </div>
     </div>
 
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
 </body>
 </html>
 
