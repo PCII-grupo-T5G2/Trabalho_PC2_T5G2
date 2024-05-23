@@ -27,8 +27,7 @@
             <button class="btn" type="submit">Reservar</button>
         </form>
         <div class="navigation">
-            <button class="btn" onclick="window.history.back()">Voltar</button>
-            <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css')}}">
+            <a class="btn" href="{{ url_for('index', username=username) }}">Voltar</a>
         </div>
     </div>
 </body>
