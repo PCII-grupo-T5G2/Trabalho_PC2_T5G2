@@ -14,7 +14,7 @@
         <button class="btn" onclick="mostrarMenu('jantar')">Jantar</button>
         <div id="menuSemanal"></div>
         <div class="navigation">
-            <button class="btn" onclick="window.history.back()">Voltar</button>
+            <a class="btn" href="{{ url_for('index', username=username) }}">Voltar</a>
             <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css')}}">
         </div>
     </div>
