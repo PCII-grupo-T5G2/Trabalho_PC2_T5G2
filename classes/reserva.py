@@ -4,7 +4,6 @@ from classes.gclass import Gclass
 
 class Reserva(Gclass):
     
-    num = 1000
     obj = dict()
     lst = list()
     pos = 0
@@ -24,8 +23,7 @@ class Reserva(Gclass):
         super().__init__()
         self._data = datetime.strptime(data, '%Y-%m-%d').date()
         self._prato= prato
-        self._codigoReserva = Reserva.num
-        Reserva.num += 1
+        self._codigoReserva = codigoReserva
         Reserva.obj[self._codigoReserva] = self
         Reserva.lst.append(self._codigoReserva)
         
@@ -43,4 +41,14 @@ class Reserva(Gclass):
     
     def __str__(self):
         return f'{self._data};{self._prato};{self._codigoReserva}'
+    
+    def procuraNovoCodigo():
+        maior_codigo = 0
+        if len(Reserva.lst) > 0:
+            return int(Reserva.lst[-1])
+        return maior_codigo
 
+#%%
+
+
+    

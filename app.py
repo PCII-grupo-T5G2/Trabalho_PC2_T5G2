@@ -58,8 +58,8 @@ def menu(username):
 def reservar(username):
     if request.method == "POST":
         
-        data_str = request.form.get("data")
-        refeicao = request.form.get("refeicao")
+        data_str = request.form["data"]
+        refeicao = request.form["refeicao"]
         
         if data_str != "":
             data = datetime.strptime(data_str, "%Y-%m-%d").date()
@@ -67,10 +67,14 @@ def reservar(username):
             formatted_datetime = current_datetime.strftime('%Y-%m-%d')
             new_datetime = datetime.strptime(formatted_datetime, '%Y-%m-%d').date()
             
+            codigo = str(Reserva.procuraNovoCodigo() + 1)   
+            s = f'{codigo};{data_str};{refeicao}'
+            Reserva.from_string(s)
+            Reserva.insert(codigo)       
             
-            reserva = Reserva(Reserva.num, data_str,refeicao)
-            cod = reserva._codigoReserva
-            reserva.insert(cod)
+            # reserva = Reserva(Reserva.num, data_str,refeicao)
+            # cod = reserva._codigoReserva
+            # reserva.insert(cod)
             
         else:
             return redirect(url_for("reservas_invalidas", username=username))   
