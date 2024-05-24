@@ -58,6 +58,10 @@ class Reserva(Gclass):
             return int(Reserva.lst[-1])
         return maior_codigo
 
+    @classmethod
+    def get_reservations_by_user(cls, email):
+        return [reserva for reserva in cls.obj.values() if reserva.email == email]
+
 #%%
 
 

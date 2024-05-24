@@ -11,18 +11,18 @@
     <div class="container">
         <h1>Reservar Refeição</h1>
         <form action="{{ url_for('reservar', username=username) }}" method="POST">
-            <label for="data">Data:</label><br>
-            <input type="date" id="data" name="data"><br><br>
-            <label for="refeicao">Refeição:</label><br>
-            <select id="refeicao" name="refeicao">
-                <option value="almoco">Almoço</option>
-                <option value="jantar">Jantar</option>
+            <label for="Data">Data:</label><br>
+            <input type="date" id="Data" name="Data"><br><br>
+            <label for="Refeição">Refeição:</label><br>
+            <select id="Refeição" name="Refeição">
+                <option value="Almoço">Almoço</option>
+                <option value="Jantar">Jantar</option>
             </select><br><br>
-            <label for="tipo">Tipo:</label><br>
-            <select id="tipo" name="tipo">
-                <option value="carne">Carne</option>
-                <option value="peixe">Peixe</option>
-                <option value="vegetariano">Vegetariano</option>
+            <label for="Tipo">Tipo:</label><br>
+            <select id="Tipo" name="Tipo">
+                <option value="Carne">Carne</option>
+                <option value="Peixe">Peixe</option>
+                <option value="Vegetariano">Vegetariano</option>
             </select><br><br>
             <button class="btn" type="submit">Reservar</button>
         </form>

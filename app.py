@@ -58,28 +58,27 @@ def menu(username):
 def reservar(username):
     if request.method == "POST":
         
-        data_str = request.form["data"]
-        refeicao = request.form["refeicao"]
-        tipo = request.form["tipo"]
+        data_str = request.form["Data"]
+        refeicao = request.form["Refeição"]
+        tipo = request.form["Tipo"]
         
         if data_str != "":
             data = datetime.strptime(data_str, "%Y-%m-%d").date()
             current_datetime = datetime.now()
             formatted_datetime = current_datetime.strftime('%Y-%m-%d')
             new_datetime = datetime.strptime(formatted_datetime, '%Y-%m-%d').date()
-            codigo = str(Reserva.procuraNovoCodigo() + 1)   
-            s = f'{codigo};{data_str};{refeicao};{tipo};{username}'
-            Reserva.from_string(s)
-            Reserva.insert(codigo)
             
+            if refeicao in ["Almoço", "Jantar"] and data > new_datetime:          
+                codigo = str(Reserva.procuraNovoCodigo() + 1)   
+                s = f'{codigo};{data_str};{refeicao};{tipo};{username}'
+                Reserva.from_string(s)
+                Reserva.insert(codigo)
+                return redirect(url_for("success", username=username))
+            else:
+                return redirect(url_for("reservas_invalidas", username=username))
         else:
             return redirect(url_for("reservas_invalidas", username=username))   
 
-        if refeicao in ["almoco", "jantar"] and data > new_datetime:
-
-            return redirect(url_for("success", username=username))
-        else:
-            return redirect(url_for("reservas_invalidas", username=username))
     else:
         return render_template("reservar.html", username=username)
 
@@ -95,7 +94,8 @@ def reservas_invalidas(username):
 
 @app.route("/reservas/<username>")
 def reservas(username):
-    return render_template("reservas.html", username=username)
+    user_reservations = Reserva.get_reservations_by_user(username)
+    return render_template("reservas.html", username=username, reservations=user_reservations)
 
 def remember_user(username, password):
     resp = make_response()
