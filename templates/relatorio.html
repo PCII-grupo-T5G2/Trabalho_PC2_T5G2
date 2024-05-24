@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Reservas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css')}}"> 
+</head>
+<body>
+    <div class="container">
+        <h1>Relatório de Reservas</h1>
+        <div class="report">
+            <table>
+                <tr>
+                    <th>Tipo de Prato</th>
+                    <th>Total Reservas</th>
+                </tr>
+                <tr>
+                    <td>Total de Pratos Reservados</td>
+                    <td>{{ total_reservations }}</td>
+                </tr>
+                <tr>
+                    <td>Total de Pratos de Carne</td>
+                    <td>{{ carne_reservations }}</td>
+                </tr>
+                <tr>
+                    <td>Total de Pratos de Peixe</td>
+                    <td>{{ peixe_reservations }}</td>
+                </tr>
+                <tr>
+                    <td>Total de Pratos Vegetarianos</td>
+                    <td>{{ vegetariano_reservations }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="navigation">
+            <a class="btn" href="{{ url_for('index', username=username) }}">Voltar</a>
+        </div>
+    </div>
+</body>
+</html>

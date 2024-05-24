@@ -51,17 +51,20 @@ def login():
         password = request.form["password"]
         message = Userlogin.chk_password(username, password)
         if message == "Valid":
+            user = Userlogin.obj[username]
             session["username"] = username
-            session["usergroup"] = "user"  # Assuming user group is retrieved from the login info
+            session["usergroup"] = user._usergroup  # Assuming the role is stored in _role attribute
             return render_template("index.html", username=username, group=session["usergroup"])
         else:
             return render_template("error.html", message=message)
     else:
         return render_template("login.html")
 
+
 @app.route("/Cantina/<username>")
 def index(username):
-    return render_template("index.html", username=username)
+    return render_template("index.html", username=username, group=session.get("usergroup"))
+
 
 @app.route("/login", methods=["GET"])
 def return_to_login():
@@ -198,6 +201,25 @@ def forgot_password():
 def logoff():
     session.clear()
     return redirect(url_for('login'))
+
+
+@app.route("/relatorio/<username>")
+def relatorio(username):
+    # Ensure only 'funcionário' can access this route
+    if session.get("usergroup") != "funcionário":
+        return redirect(url_for("index", username=username))
+
+    # Calculate the number of reserved dishes by type
+    total_reservations = len(Reserva.lst)
+    carne_reservations = len([r for r in Reserva.lst if Reserva.obj[r]._tipo == "carne"])
+    peixe_reservations = len([r for r in Reserva.lst if Reserva.obj[r]._tipo == "peixe"])
+    vegetariano_reservations = len([r for r in Reserva.lst if Reserva.obj[r]._tipo == "vegetariano"])
+
+    # Pass the calculated values to the template
+    return render_template("relatorio.html", username=username, total_reservations=total_reservations,
+                           carne_reservations=carne_reservations, peixe_reservations=peixe_reservations,
+                           vegetariano_reservations=vegetariano_reservations)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
