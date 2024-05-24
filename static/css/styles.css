@@ -123,3 +123,36 @@ ul li ul {
     margin-top: 20px; /* Adiciona margem superior */
 }
 
+/* Custom styles for the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    table, th, td {
+        font-size: 14px;
+    }
+    form select, form button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+

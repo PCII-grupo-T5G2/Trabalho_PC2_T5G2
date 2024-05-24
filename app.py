@@ -31,29 +31,18 @@ def get_menu_for_week(week):
                    "Quarta": {"carne": None, "peixe": None, "vegetariano": None},
                    "Quinta": {"carne": None, "peixe": None, "vegetariano": None},
                    "Sexta": {"carne": None, "peixe": None, "vegetariano": None}}
+    
+    assigned_dishes = {"carne": [], "peixe": [], "vegetariano": []}
+    
     for cod in menu_data:
         prato = Prato.obj[cod]
-        if prato.tipo == "carne":
-            menu_sorted["Segunda"]["carne"] = prato if menu_sorted["Segunda"]["carne"] is None else menu_sorted["Segunda"]["carne"]
-            menu_sorted["Terça"]["carne"] = prato if menu_sorted["Terça"]["carne"] is None else menu_sorted["Terça"]["carne"]
-            menu_sorted["Quarta"]["carne"] = prato if menu_sorted["Quarta"]["carne"] is None else menu_sorted["Quarta"]["carne"]
-            menu_sorted["Quinta"]["carne"] = prato if menu_sorted["Quinta"]["carne"] is None else menu_sorted["Quinta"]["carne"]
-            menu_sorted["Sexta"]["carne"] = prato if menu_sorted["Sexta"]["carne"] is None else menu_sorted["Sexta"]["carne"]
-        elif prato.tipo == "peixe":
-            menu_sorted["Segunda"]["peixe"] = prato if menu_sorted["Segunda"]["peixe"] is None else menu_sorted["Segunda"]["peixe"]
-            menu_sorted["Terça"]["peixe"] = prato if menu_sorted["Terça"]["peixe"] is None else menu_sorted["Terça"]["peixe"]
-            menu_sorted["Quarta"]["peixe"] = prato if menu_sorted["Quarta"]["peixe"] is None else menu_sorted["Quarta"]["peixe"]
-            menu_sorted["Quinta"]["peixe"] = prato if menu_sorted["Quinta"]["peixe"] is None else menu_sorted["Quinta"]["peixe"]
-            menu_sorted["Sexta"]["peixe"] = prato if menu_sorted["Sexta"]["peixe"] is None else menu_sorted["Sexta"]["peixe"]
-        elif prato.tipo == "vegetariano":
-            menu_sorted["Segunda"]["vegetariano"] = prato if menu_sorted["Segunda"]["vegetariano"] is None else menu_sorted["Segunda"]["vegetariano"]
-            menu_sorted["Terça"]["vegetariano"] = prato if menu_sorted["Terça"]["vegetariano"] is None else menu_sorted["Terça"]["vegetariano"]
-            menu_sorted["Quarta"]["vegetariano"] = prato if menu_sorted["Quarta"]["vegetariano"] is None else menu_sorted["Quarta"]["vegetariano"]
-            menu_sorted["Quinta"]["vegetariano"] = prato if menu_sorted["Quinta"]["vegetariano"] is None else menu_sorted["Quinta"]["vegetariano"]
-            menu_sorted["Sexta"]["vegetariano"] = prato if menu_sorted["Sexta"]["vegetariano"] is None else menu_sorted["Sexta"]["vegetariano"]
+        for day in menu_sorted:
+            if menu_sorted[day][prato.tipo] is None and prato.cod not in assigned_dishes[prato.tipo]:
+                menu_sorted[day][prato.tipo] = prato
+                assigned_dishes[prato.tipo].append(prato.cod)
+                break
+
     return menu_sorted
-
-
 
 @app.route("/", methods=["POST", "GET"])
 def login():
@@ -207,7 +196,6 @@ def forgot_password():
 
 @app.route('/logoff')
 def logoff():
-    # Clear the session data
     session.clear()
     return redirect(url_for('login'))
 
