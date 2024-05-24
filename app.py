@@ -1,5 +1,5 @@
-from datetime import date, datetime
-from flask import Flask, render_template, request, redirect, url_for, make_response, session
+from datetime import datetime
+from flask import Flask, render_template, request, redirect, url_for, session
 from classes.Utilizador import Utilizador as Person
 from classes.userlogin import Userlogin
 from classes.reserva import Reserva
@@ -14,50 +14,84 @@ import string
 app = Flask(__name__)
 path = 'data/cantina.db'
 Person.read(path)
-prev_option = ""  
-Ementa.read(path) 
-Userlogin.read(path) 
+Ementa.read(path)
+Userlogin.read(path)
 Reserva.read(path)
-Prato.read(path)        
+Prato.read(path)
 app.secret_key = 'BAD_SECRET_KEY'
- 
- 
+
 Userlogin("user1", "admin", Userlogin.set_password("password1"))
 Userlogin("user2", "user", Userlogin.set_password("password2"))
 
+def get_menu_for_week(week):
+    Prato.set_filter({"_semana": [str(week)]})
+    menu_data = Prato.lst
+    menu_sorted = {"Segunda": {"carne": None, "peixe": None, "vegetariano": None},
+                   "Terça": {"carne": None, "peixe": None, "vegetariano": None},
+                   "Quarta": {"carne": None, "peixe": None, "vegetariano": None},
+                   "Quinta": {"carne": None, "peixe": None, "vegetariano": None},
+                   "Sexta": {"carne": None, "peixe": None, "vegetariano": None}}
+    for cod in menu_data:
+        prato = Prato.obj[cod]
+        if prato.tipo == "carne":
+            menu_sorted["Segunda"]["carne"] = prato if menu_sorted["Segunda"]["carne"] is None else menu_sorted["Segunda"]["carne"]
+            menu_sorted["Terça"]["carne"] = prato if menu_sorted["Terça"]["carne"] is None else menu_sorted["Terça"]["carne"]
+            menu_sorted["Quarta"]["carne"] = prato if menu_sorted["Quarta"]["carne"] is None else menu_sorted["Quarta"]["carne"]
+            menu_sorted["Quinta"]["carne"] = prato if menu_sorted["Quinta"]["carne"] is None else menu_sorted["Quinta"]["carne"]
+            menu_sorted["Sexta"]["carne"] = prato if menu_sorted["Sexta"]["carne"] is None else menu_sorted["Sexta"]["carne"]
+        elif prato.tipo == "peixe":
+            menu_sorted["Segunda"]["peixe"] = prato if menu_sorted["Segunda"]["peixe"] is None else menu_sorted["Segunda"]["peixe"]
+            menu_sorted["Terça"]["peixe"] = prato if menu_sorted["Terça"]["peixe"] is None else menu_sorted["Terça"]["peixe"]
+            menu_sorted["Quarta"]["peixe"] = prato if menu_sorted["Quarta"]["peixe"] is None else menu_sorted["Quarta"]["peixe"]
+            menu_sorted["Quinta"]["peixe"] = prato if menu_sorted["Quinta"]["peixe"] is None else menu_sorted["Quinta"]["peixe"]
+            menu_sorted["Sexta"]["peixe"] = prato if menu_sorted["Sexta"]["peixe"] is None else menu_sorted["Sexta"]["peixe"]
+        elif prato.tipo == "vegetariano":
+            menu_sorted["Segunda"]["vegetariano"] = prato if menu_sorted["Segunda"]["vegetariano"] is None else menu_sorted["Segunda"]["vegetariano"]
+            menu_sorted["Terça"]["vegetariano"] = prato if menu_sorted["Terça"]["vegetariano"] is None else menu_sorted["Terça"]["vegetariano"]
+            menu_sorted["Quarta"]["vegetariano"] = prato if menu_sorted["Quarta"]["vegetariano"] is None else menu_sorted["Quarta"]["vegetariano"]
+            menu_sorted["Quinta"]["vegetariano"] = prato if menu_sorted["Quinta"]["vegetariano"] is None else menu_sorted["Quinta"]["vegetariano"]
+            menu_sorted["Sexta"]["vegetariano"] = prato if menu_sorted["Sexta"]["vegetariano"] is None else menu_sorted["Sexta"]["vegetariano"]
+    return menu_sorted
+
+
+
 @app.route("/", methods=["POST", "GET"])
 def login():
-     if request.method == "POST":
-         username = request.form["username"]
-         password = request.form["password"]
-         message = Userlogin.chk_password(username, password)
-         if message == "Valid":
-             
-             return render_template("index.html", username=username, group=session["usergroup"])
-         else:
-             
-             return render_template("error.html", message=message) 
-     else:
-         
-         return render_template("login.html") 
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        message = Userlogin.chk_password(username, password)
+        if message == "Valid":
+            session["username"] = username
+            session["usergroup"] = "user"  # Assuming user group is retrieved from the login info
+            return render_template("index.html", username=username, group=session["usergroup"])
+        else:
+            return render_template("error.html", message=message)
+    else:
+        return render_template("login.html")
 
 @app.route("/Cantina/<username>")
 def index(username):
-     return render_template("index.html", username=username) 
+    return render_template("index.html", username=username)
 
 @app.route("/login", methods=["GET"])
 def return_to_login():
-     return redirect(url_for("login"))
- 
+    return redirect(url_for("login"))
 
-@app.route("/menu/<username>")
+@app.route("/menu/<username>", methods=["GET", "POST"])
 def menu(username):
-    return render_template("menu.html", username=username)
+    if request.method == "POST":
+        week = request.form["week"]
+        menu_data = get_menu_for_week(week)
+        return render_template("menu.html", username=username, menu=menu_data, week=week)
+    else:
+        week = request.args.get('week', default=1, type=int)
+        menu_data = get_menu_for_week(week)
+        return render_template("menu.html", username=username, menu=menu_data, week=week)
 
 @app.route("/reservar/<username>", methods=["POST", "GET"])
 def reservar(username):
     if request.method == "POST":
-        
         data_str = request.form["Data"]
         refeicao = request.form["Refeição"]
         tipo = request.form["Tipo"]
@@ -68,8 +102,8 @@ def reservar(username):
             formatted_datetime = current_datetime.strftime('%Y-%m-%d')
             new_datetime = datetime.strptime(formatted_datetime, '%Y-%m-%d').date()
             
-            if refeicao in ["Almoço", "Jantar"] and data > new_datetime:          
-                codigo = str(Reserva.procuraNovoCodigo() + 1)   
+            if refeicao in ["Almoço", "Jantar"] and data > new_datetime:
+                codigo = str(Reserva.procuraNovoCodigo() + 1)
                 s = f'{codigo};{data_str};{refeicao};{tipo};{username}'
                 Reserva.from_string(s)
                 Reserva.insert(codigo)
@@ -77,16 +111,13 @@ def reservar(username):
             else:
                 return redirect(url_for("reservas_invalidas", username=username))
         else:
-            return redirect(url_for("reservas_invalidas", username=username))   
-
+            return redirect(url_for("reservas_invalidas", username=username))
     else:
         return render_template("reservar.html", username=username)
-
 
 @app.route("/success")
 def success():
     return render_template("success.html")
-
 
 @app.route("/reservas_invalidas/<username>")
 def reservas_invalidas(username):
@@ -115,7 +146,7 @@ def signup():
         senha = request.form["senha"]
         email = request.form["email"]
         role = 'cliente'
-        codigo = str(Person.procuraNovoCodigo() + 1)   
+        codigo = str(Person.procuraNovoCodigo() + 1)
         s = f'{codigo};{name};{role};{senha};{email}'
         f = f'{email};{role};{name}'
         
@@ -124,7 +155,6 @@ def signup():
         
         Userlogin.from_string(f)
         Userlogin.insert(email)
-        
         
         return render_template("login.html")
     else:
@@ -175,25 +205,11 @@ def forgot_password():
     else:
         return render_template("forgot_password.html")
 
-
 @app.route('/logoff')
 def logoff():
     # Clear the session data
     session.clear()
     return redirect(url_for('login'))
- 
-
-
 
 if __name__ == "__main__":
-     app.run(debug=True)
-
-             
- 
- 
- 
- 
- 
- 
- 
- 
+    app.run(debug=True)

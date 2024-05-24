@@ -4,56 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ementa Semanal - Cantina</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/button.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css')}}">
+    <style>
+        h1 {
+            margin-bottom: 20px; /* Add margin-bottom for the title */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Ementa Semanal</h1>
-        <button class="btn" onclick="mostrarMenu('almoco')">Almoço</button>
-        <button class="btn" onclick="mostrarMenu('jantar')">Jantar</button>
-        <div id="menuSemanal"></div>
+        <form method="post" action="{{ url_for('menu', username=username) }}">
+            <label for="week">Escolha a Semana:</label>
+            <select id="week" name="week">
+                <option value="1" {% if week == '1' %}selected{% endif %}>Semana 1</option>
+                <option value="2" {% if week == '2' %}selected{% endif %}>Semana 2</option>
+                <option value="3" {% if week == '3' %}selected{% endif %}>Semana 3</option>
+                <option value="4" {% if week == '4' %}selected{% endif %}>Semana 4</option>
+            </select>
+            <button type="submit">Ver Menu</button>
+        </form>
+        <h2>Menu da Semana {{ week }}</h2>
+        <table>
+            <tr>
+                <th>Dia da Semana</th>
+                <th>Carne</th>
+                <th>Peixe</th>
+                <th>Vegetariano</th>
+            </tr>
+            {% for day, dishes in menu.items() %}
+            <tr>
+                <td>{{ day }}</td>
+                <td>{{ dishes.carne.nome if dishes.carne else '-' }}</td>
+                <td>{{ dishes.peixe.nome if dishes.peixe else '-' }}</td>
+                <td>{{ dishes.vegetariano.nome if dishes.vegetariano else '-' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
         <div class="navigation">
             <a class="btn" href="{{ url_for('index', username=username) }}">Voltar</a>
-            <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css')}}">
         </div>
     </div>
-
-    <script>
-        function mostrarMenu(refeicao) {
-            const menu = {
-                almoco: {
-                    segunda: { carne: "Bife à milanesa", peixe: "Bacalhau à Brás", vegetariano: "Legumes salteados" },
-                    terca: { carne: "Frango assado", peixe: "Salmão grelhado", vegetariano: "Tofu com legumes" },
-                    quarta: { carne: "Carne de porco à alentejana", peixe: "Sardinhas assadas", vegetariano: "Risoto de cogumelos" },
-                    quinta: { carne: "Almôndegas", peixe: "Dourada grelhada", vegetariano: "Lasanha de vegetais" },
-                    sexta: { carne: "Costeletas de borrego", peixe: "Polvo à lagareiro", vegetariano: "Espaguete de abobrinha" }
-                },
-                jantar: {
-                    segunda: { carne: "Feijoada", peixe: "Atum à Brás", vegetariano: "Sopa de legumes" },
-                    terca: { carne: "Hambúrguer", peixe: "Peixe espada", vegetariano: "Pizza vegetariana" },
-                    quarta: { carne: "Picanha", peixe: "Robalo grelhado", vegetariano: "Salada de quinoa" },
-                    quinta: { carne: "Lasanha de carne", peixe: "Tilápia ao forno", vegetariano: "Curry de grão-de-bico" },
-                    sexta: { carne: "Alcatra", peixe: "Camarão ao alho", vegetariano: "Strogonoff de cogumelos" }
-                }
-            };
-
-            const diasSemana = ["segunda", "terca", "quarta", "quinta", "sexta"];
-            let html = `<h3>Menu do ${refeicao.charAt(0).toUpperCase() + refeicao.slice(1)}</h3><ul>`;
-
-            diasSemana.forEach(dia => {
-                html += `<li><strong>${dia.charAt(0).toUpperCase() + dia.slice(1)}-feira:</strong>
-                    <ul>
-                        <li>Carne: ${menu[refeicao][dia].carne}</li>
-                        <li>Peixe: ${menu[refeicao][dia].peixe}</li>
-                        <li>Vegetariano: ${menu[refeicao][dia].vegetariano}</li>
-                    </ul>
-                </li>`;
-            });
-
-            html += `</ul>`;
-            document.getElementById('menuSemanal').innerHTML = html;
-        }
-    </script>
 </body>
 </html>

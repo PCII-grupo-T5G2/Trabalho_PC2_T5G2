@@ -3,161 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>User Reservations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css')}}"> 
     <style>
-        /* Estilos para os botões de navegação "Voltar" e "Início" */
-        .navigation button,
-        .navigation a {
-            background-color: #3498db; /* Cor azul */
-            color: white;
-            padding: 6px 12px; /* Menor tamanho */
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px; /* Menor tamanho */
-            text-transform: uppercase;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        .navigation button:hover,
-        .navigation a:hover {
-            background-color: #2980b9; /* Cor azul mais escura ao passar o mouse */
-        }
-
-        body {
-            font-family: "Raleway";
-            font-size: 1.5em;
-            text-align: center;
-        }
-
-        /* Reset básico */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Estilos globais */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        /* Container principal */
-        .container {
-            text-align: center;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Estilos do menu */
-        .menu {
-            display: flex;
-            justify-content: center;
-            gap: 10px; /* Espaçamento entre os botões */
-            margin-bottom: 20px;
-        }
-
-        /* Classe de estilo para botões */
-        .btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            text-align: center;
-            text-decoration: none; /* Para que os links com .btn não tenham sublinhado */
-        }
-
-        .btn:hover {
-            background-color: #45a049;
-        }
-
-        /* Estilos do conteúdo dinâmico */
-        #conteudo {
-            margin-top: 20px;
-            text-align: left;
-        }
-
-        /* Estilos dos formulários */
-        form {
-            display: inline-block;
-            text-align: left;
-        }
-
-        form label {
-            font-weight: bold;
-        }
-
-        form input, form select, form button {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 15px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        form button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        form button:hover {
-            background-color: #45a049;
-        }
-
-        /* Estilos da lista de reservas */
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        ul li {
-            background: #e0e0e0;
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 4px;
-        }
-
-        ul li ul {
-            background: #f9f9f9;
-            margin-top: 5px;
-            padding: 10px;
-            border-radius: 4px;
-        }
-
-        /* Estilos dos botões de navegação */
-        .navigation {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .menu {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 40px;
-            margin-top: 20px; /* Adiciona margem superior */
+        h1 {
+            margin-bottom: 20px; /* Add margin-bottom for the title */
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Your Reservations</h1>
+        <h1>As Suas Reservas</h1>
         <table border="1" width="100%">
             <tr>
                 <th>Data</th>
@@ -173,8 +29,12 @@
             {% endfor %}
         </table>
         <div class="navigation">
-            <a href="{{ url_for('index', username=username) }}" class="btn">Home</a>
-            <a href="{{ url_for('menu', username=username) }}" class="btn">Menu</a>
+            <div class="navigation">
+                <a class="btn" href="{{ url_for('index', username=username) }}">Voltar</a>
+            </div>
+            <div class="navigation">
+                <a class="btn" href="{{ url_for('menu', username=username) }}">Ementa</a>
+            </div>
         </div>
     </div>
 </body>
