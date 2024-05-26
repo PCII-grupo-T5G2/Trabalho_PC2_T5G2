@@ -140,7 +140,7 @@ def signup():
         role = 'cliente'
         codigo = str(Person.procuraNovoCodigo() + 1)
         s = f'{codigo};{name};{role};{senha};{email}'
-        f = f'{email};{role};{name}'
+        f = f'{email};{role};{senha}'
         
         Person.from_string(s)
         Person.insert(codigo)
@@ -206,6 +206,15 @@ def relatorio(username):
     if session.get("usergroup") != "funcionário":
         return redirect(url_for("index", username=username))
 
+    total_reservations = len(Reserva.lst)
+    carne_reservations = len([r for r in Reserva.lst if Reserva.obj[r]._tipo == "Carne"])
+    peixe_reservations = len([r for r in Reserva.lst if Reserva.obj[r]._tipo == "Peixe"])
+    vegetariano_reservations = len([r for r in Reserva.lst if Reserva.obj[r]._tipo == "Vegetariano"])
+
+    if session.get("usergroup") != "funcionário":
+        return redirect(url_for("index", username=username))
+
+    # Calculate the number of reserved dishes by type
     total_reservations = len(Reserva.lst)
     carne_reservations = len([r for r in Reserva.lst if Reserva.obj[r]._tipo == "Carne"])
     peixe_reservations = len([r for r in Reserva.lst if Reserva.obj[r]._tipo == "Peixe"])
