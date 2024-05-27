@@ -5,11 +5,7 @@ from classes.userlogin import Userlogin
 from classes.reserva import Reserva
 from classes.ementa import Ementa
 from classes.prato import Prato
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-import random
-import string
+
 
 app = Flask(__name__)
 path = 'data/cantina.db'
@@ -179,53 +175,7 @@ def signup():
     else:
         return render_template("signup.html")
 
-@app.route('/reset_password', methods=['POST'])
-def reset_password():
-    username = request.form['username']
-    return redirect(url_for('login'))
 
-def generate_password():
-    length = 10
-    chars = string.ascii_letters + string.digits
-    return ''.join(random.choice(chars) for _ in range(length))
-
-def send_email(receiver_email, new_password):
-    sender_email = "your_email@example.com"
-    password = "your_email_password"
-
-    message = MIMEMultipart()
-    message["From"] = sender_email
-    message["To"] = receiver_email
-    message["Subject"] = "Password Reset"
-
-    body = f"Your new password is: {new_password}"
-    message.attach(MIMEText(body, "plain"))
-
-    with smtplib.SMTP_SSL("smtp.example.com", 465) as server:
-        server.login(sender_email, password)
-        server.sendmail(sender_email, receiver_email, message.as_string())
-
-@app.route("/forgot_password", methods=["GET", "POST"])
-def forgot_password():
-    if request.method == "POST":
-        email = request.form["email"]
-        new_password = generate_password()
-
-        # Here you would typically update the user's password in your database
-        # For demonstration purposes, let's just print the new password
-        print("New Password:", new_password)
-
-        # Send password reset email
-        send_email(email, new_password)
-
-        return "Password reset instructions sent to your email."
-    else:
-        return render_template("forgot_password.html")
-
-@app.route('/logoff')
-def logoff():
-    session.clear()
-    return redirect(url_for('login'))
 
 
 @app.route("/relatorio/<username>")
