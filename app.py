@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, make_response
 from classes.Utilizador import Utilizador as Person
 from classes.userlogin import Userlogin
 from classes.reserva import Reserva
@@ -44,6 +44,17 @@ def get_menu_for_week(week):
 
     return menu_sorted
 
+def remember_user(username, password):
+    resp = make_response(redirect(url_for('index', username=username)))  
+    resp.set_cookie('username', username, max_age=6060247)  
+    resp.set_cookie('password', password, max_age=6060247)
+    return resp
+
+def get_remembered_user():
+    username = request.cookies.get('username')
+    password = request.cookies.get('password')
+    return username, password
+
 @app.route("/", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
@@ -53,12 +64,37 @@ def login():
         if message == "Valid":
             user = Userlogin.obj[username]
             session["username"] = username
-            session["usergroup"] = user._usergroup  # Assuming the role is stored in _role attribute
+            session["usergroup"] = user._usergroup
+            
+            if "remember_me" in request.form:  
+                response = remember_user(username, password)
+                return response  
+                
             return render_template("index.html", username=username, group=session["usergroup"])
         else:
             return render_template("error.html", message=message)
     else:
-        return render_template("login.html")
+       
+        remembered_username, remembered_password = get_remembered_user()
+        if remembered_username and remembered_password:
+           
+            message = Userlogin.chk_password(remembered_username, remembered_password)
+            if message == "Valid":
+                user = Userlogin.obj[remembered_username]
+                session["username"] = remembered_username
+                session["usergroup"] = user._usergroup
+                return render_template("index.html", username=remembered_username, group=session["usergroup"])
+        
+        return render_template("login.html") 
+
+
+@app.route('/logoff')
+def logoff():
+    session.clear()
+    resp = make_response(redirect(url_for('login')))
+    resp.set_cookie('username', '', expires=0)  
+    resp.set_cookie('password', '', expires=0)
+    return resp
 
 
 @app.route("/Cantina/<username>")
@@ -120,16 +156,7 @@ def reservas(username):
     user_reservations = Reserva.get_reservations_by_user(username)
     return render_template("reservas.html", username=username, reservations=user_reservations)
 
-def remember_user(username, password):
-    resp = make_response()
-    resp.set_cookie('username', username, max_age=6060247)  # 1 week expiration
-    resp.set_cookie('password', password, max_age=6060247)
-    return resp
 
-def get_remembered_user():
-    username = request.cookies.get('username')
-    password = request.cookies.get('password')
-    return username, password
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
