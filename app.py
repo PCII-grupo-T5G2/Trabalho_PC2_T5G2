@@ -169,9 +169,9 @@ def signup():
         Person.insert(codigo)
         
         Userlogin.from_string(f)
-        Userlogin.insert(email)
+        Userlogin.insert(email)   
         
-        return render_template("login.html")
+        return redirect(url_for("login"))
     else:
         return render_template("signup.html")
 
